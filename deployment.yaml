@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-game-deployment
+  labels:
+    app: python-game
+spec:
+  replicas: 3  # Number of replicas
+  selector:
+    matchLabels:
+      app: python-game
+  template:
+    metadata:
+      labels:
+        app: python-game
+    spec:
+      containers:
+        - name: python-game
+          image: pranjalkumar09/python_games_09:latest  # Replace with your Docker image URL
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: static-volume
+              mountPath: /app/static  # Make sure to adjust based on your folder structure
+      volumes:
+        - name: static-volume
+          configMap:
+            name: static-files-config  # Will be used to mount static files
